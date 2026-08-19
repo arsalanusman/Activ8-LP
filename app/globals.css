@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Dark Theme Default - High Contrast Readability */
+    --bg-main: #060608;
+    --bg-surface: #0E0E12;
+    --bg-card: #13131A;
+    --bg-card-hover: #1A1A24;
+
+    --text-primary: #FFFFFF;
+    --text-secondary: #E2E8F0;
+    --text-muted: #94A3B8;
+
+    /* Deep Emerald Primary Palette (#00685B) */
+    --accent-emerald: #00685B;
+    --accent-emerald-light: #00897B;
+    --accent-emerald-glow: rgba(0, 104, 91, 0.4);
+
+    --border-subtle: rgba(255, 255, 255, 0.14);
+    --border-hover: rgba(0, 104, 91, 0.6);
+    --border-emerald: rgba(0, 104, 91, 0.65);
+
+    --card-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  }
+
+  html[data-theme="light"] {
+    /* Light Theme - Ultra-Crisp Pitch Contrast */
+    --bg-main: #FFFFFF;
+    --bg-surface: #F8FAFC;
+    --bg-card: #FFFFFF;
+    --bg-card-hover: #F1F5F9;
+
+    --text-primary: #020617;
+    --text-secondary: #0F172A;
+    --text-muted: #334155;
+
+    --accent-emerald: #00685B;
+    --accent-emerald-light: #004D43;
+    --accent-emerald-glow: rgba(0, 104, 91, 0.25);
+
+    --border-subtle: rgba(15, 23, 42, 0.16);
+    --border-hover: rgba(0, 104, 91, 0.55);
+    --border-emerald: rgba(0, 104, 91, 0.55);
+
+    --card-shadow: 0 10px 30px rgba(15, 23, 42, 0.07);
+  }
+
+  html {
+    color-scheme: dark light;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+
+  body {
+    overflow-x: hidden;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    selection-background-color: var(--accent-emerald);
+    selection-color: #ffffff;
+    transition: background-color 0.4s ease, color 0.4s ease;
+    font-weight: 400;
+  }
+}
+
+/* Theme Semantic Text Utilities for 100% Light & Dark Readability */
+.text-primary-var {
+  color: var(--text-primary);
+}
+
+.text-secondary-var {
+  color: var(--text-secondary);
+}
+
+.text-muted-var {
+  color: var(--text-muted);
+}
+
+/* Custom Cursor & Interactivity */
+@media (pointer: fine) {
+  body {
+    cursor: default;
+  }
+  a, button, [role="button"], [data-cursor] {
+    cursor: none !important;
+  }
+}
+
+/* Film Grain Noise Overlay */
+.bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
+}
+
+/* Fluid High-Readability Typography Utilities */
+.text-display-hero {
+  font-size: clamp(3.25rem, 8vw, 8.5rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+}
+
+.text-display-section {
+  font-size: clamp(2.5rem, 5.2vw, 5.5rem);
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+}
+
+.text-display-sub {
+  font-size: clamp(1.65rem, 2.8vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+/* Emerald Glow Utilities */
+.emerald-glow {
+  box-shadow: 0 0 45px var(--accent-emerald-glow);
+}
+
+.emerald-glow-lg {
+  box-shadow: 0 0 90px rgba(0, 104, 91, 0.45);
+}
+
+.border-subtle {
+  border-color: var(--border-subtle);
+}
+
+/* Premium Card Elevation */
+.premium-card {
+  box-shadow: var(--card-shadow);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.premium-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-emerald);
+}
+
+/* Marquee infinite animation */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Hide Scrollbar for clean luxury containers */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
