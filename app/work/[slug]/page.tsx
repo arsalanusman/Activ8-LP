@@ -1,203 +1,143 @@
-import { notFound } from "next/navigation";
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowUpRight, Layers, Sparkles, ShieldCheck } from "lucide-react";
-import { projectsData } from "@/data/projects";
+import { ArrowUpRight, Filter } from "lucide-react";
+import { projectsData, ProjectItem } from "@/data/projects";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Badge } from "@/components/ui/Badge";
-import { BeforeAfterSlider } from "@/components/ui/BeforeAfterSlider";
+import { TextReveal } from "@/components/ui/TextReveal";
+import { ProjectModal } from "@/components/ui/ProjectModal";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
-import { MagneticButton } from "@/components/ui/MagneticButton";
 
-interface CaseStudyPageProps {
-  params: Promise<{ slug: string }>;
-}
+export default function WorkPage() {
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
 
-export async function generateStaticParams() {
-  return projectsData.map((project) => ({
-    slug: project.slug,
-  }));
-}
+  const categories = ["All", "Strategy", "Product", "Brand", "Experience", "AI"];
 
-export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
-  const { slug } = await params;
-  const projectIndex = projectsData.findIndex((p) => p.slug === slug);
-
-  if (projectIndex === -1) {
-    notFound();
-  }
-
-  const project = projectsData[projectIndex];
-  const nextProject = projectsData[(projectIndex + 1) % projectsData.length];
+  const filteredProjects = selectedCategory === "All"
+    ? projectsData
+    : projectsData.filter((p) => p.category.toLowerCase().includes(selectedCategory.toLowerCase()));
 
   return (
     <SmoothScroll>
-      <main className="min-h-screen bg-[var(--bg-main)] text-[var(--text-primary)] relative">
+      <main className="min-h-screen bg-[var(--bg-main)] text-current relative">
         <Header />
 
         {/* Hero Section */}
-        <section className="pt-36 pb-20 border-b border-[var(--border-subtle)]">
+        <section className="pt-36 pb-20 border-b border-white/10 dark:border-white/10 light:border-black/10">
           <div className="max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-16 space-y-8">
-            <Link
-              href="/work"
-              className="inline-flex items-center gap-2 text-xs font-mono text-[var(--text-muted)] hover:text-[#00685B] transition-colors font-bold"
-            >
-              <ArrowLeft className="w-4 h-4" /> BACK TO WORK INDEX
-            </Link>
+            <TextReveal delay={0.1}>
+              <Badge label="Portfolio Index" variant="emerald" />
+            </TextReveal>
 
-            <div className="space-y-4">
-              <div className="flex flex-wrap items-center gap-3">
-                <Badge label={project.client} variant="emerald" />
-                <span className="text-xs font-mono text-[var(--text-muted)] font-bold">• {project.year}</span>
-                <span className="text-xs font-mono text-[var(--text-muted)] font-bold">• {project.category}</span>
-              </div>
-              <h1 className="text-display-hero font-normal text-[var(--text-primary)] tracking-tight max-w-5xl font-sans">
-                {project.title}
+            <TextReveal delay={0.2}>
+              <h1 className="text-display-hero font-light text-current tracking-tight">
+                Selected Work <br />
+                <span className="italic font-serif font-light text-[#00685B]">(2024â€“2026)</span>
               </h1>
-            </div>
+            </TextReveal>
 
-            {/* Key Metric Highlights Header Bar */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 p-6 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-subtle)] font-mono text-xs shadow-lg">
-              <div>
-                <span className="text-[#00685B] font-bold block uppercase text-xs">VERIFIED IMPACT</span>
-                <span className="text-3xl font-bold text-[var(--text-primary)] block mt-1">{project.resultMetric}</span>
-                <span className="text-[var(--text-secondary)] font-medium">{project.resultLabel}</span>
-              </div>
-              <div>
-                <span className="text-[#00685B] font-bold block uppercase text-xs">CORE DISCIPLINE</span>
-                <span className="text-base font-bold text-[var(--text-primary)] block mt-2">{project.category}</span>
-              </div>
-              <div>
-                <span className="text-[#00685B] font-bold block uppercase text-xs">AGENCY SCOPE</span>
-                <span className="text-base font-bold text-[var(--text-primary)] block mt-2">End-to-End Transformation</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Full-bleed Hero Visual */}
-        <section className="py-16">
-          <div className="max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-16">
-            <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden border border-[var(--border-subtle)] bg-[var(--bg-card)] premium-card">
-              <Image
-                src={project.image}
-                alt={project.title}
-                fill
-                priority
-                sizes="(max-width: 1600px) 100vw, 1600px"
-                className="object-cover"
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Challenge & Solution Narrative */}
-        <section className="py-20 md:py-32 border-b border-[var(--border-subtle)]">
-          <div className="max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-16">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-              <div className="lg:col-span-4 space-y-6">
-                <Badge label="Strategic Challenge" variant="emerald" />
-                <h3 className="text-2xl font-normal text-[var(--text-primary)] tracking-tight font-sans">
-                  Re-architecting digital touchpoints for modern consumer expectations.
-                </h3>
-              </div>
-              <div className="lg:col-span-8 space-y-6 text-lg text-[var(--text-secondary)] font-normal leading-relaxed">
-                <p>
-                  {project.description}
-                </p>
-                <p>
-                  Activ8 brought together strategic design research, bespoke UX/UI systems, micro-frontend engineering, and custom AI personalization pipelines to solve key legacy bottlenecks and accelerate market velocity.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Interactive Before & After UX Slider Section */}
-        <section className="py-20 md:py-32 bg-[var(--bg-surface)] border-b border-[var(--border-subtle)]">
-          <div className="max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-16 space-y-12">
-            <div className="max-w-3xl space-y-4">
-              <Badge label="Interactive UX Evolution" variant="emerald" />
-              <h2 className="text-display-section font-normal text-[var(--text-primary)] tracking-tight font-sans">
-                Before & After UX Transformation
-              </h2>
-              <p className="text-base text-[var(--text-secondary)] font-normal">
-                Drag the interactive slider below to explore how Activ8 redesigned the interface layout, typography hierarchy, and transaction flows.
+            <TextReveal delay={0.3}>
+              <p className="text-xl text-neutral-500 dark:text-neutral-400 font-light max-w-2xl leading-relaxed">
+                A showcase of digital products, brand identities, headless commerce engines, and artificial intelligence platforms built for market leaders.
               </p>
-            </div>
+            </TextReveal>
 
-            <BeforeAfterSlider
-              beforeImage="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1600&q=80"
-              afterImage={project.image}
-              beforeLabel="Legacy Portal (Before)"
-              afterLabel="Activ8 Redesign (After)"
-            />
+            {/* Filter Pills */}
+            <TextReveal delay={0.4} className="pt-8">
+              <div className="flex flex-wrap items-center gap-3 border-t border-white/10 dark:border-white/10 light:border-black/10 pt-8 font-mono text-xs">
+                <span className="flex items-center gap-1.5 text-neutral-500 mr-2 font-bold">
+                  <Filter className="w-3.5 h-3.5" /> FILTER BY:
+                </span>
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`px-4 py-2 rounded-full border transition-all cursor-pointer ${
+                      selectedCategory === cat
+                        ? "bg-[#00685B] border-[#00685B] text-white font-bold"
+                        : "bg-white/5 border-white/10 text-neutral-500 hover:text-current"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+                <span className="ml-auto text-neutral-500 font-mono">
+                  SHOWING ({filteredProjects.length} / {projectsData.length})
+                </span>
+              </div>
+            </TextReveal>
           </div>
         </section>
 
-        {/* Technology Stack & Deliverables */}
-        <section className="py-20 md:py-32 border-b border-[var(--border-subtle)]">
-          <div className="max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-16 space-y-12">
-            <div className="max-w-3xl space-y-4">
-              <Badge label="Engineering & Capabilities" variant="emerald" />
-              <h2 className="text-3xl sm:text-4xl font-normal text-[var(--text-primary)] font-sans">
-                Architecture & System Deliverables
-              </h2>
-            </div>
+        {/* Portfolio Grid Section */}
+        <section className="py-20 md:py-32">
+          <div className="max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
+              {filteredProjects.map((project, idx) => (
+                <TextReveal key={project.id} delay={idx * 0.1}>
+                  <div
+                    onClick={() => setSelectedProject(project)}
+                    className="group space-y-6 cursor-pointer"
+                  >
+                    {/* Visual Card */}
+                    <div className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-[var(--bg-card)] border border-white/10 dark:border-white/10 light:border-black/10 group-hover:border-[#00685B] transition-colors duration-500 premium-card">
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                      />
+                      <div className="absolute top-4 left-4 bg-[var(--bg-main)]/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 text-xs font-mono font-bold text-[#00685B]">
+                        {project.resultMetric} â€” {project.resultLabel}
+                      </div>
+                    </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="p-8 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-subtle)] space-y-4 premium-card">
-                <Layers className="w-6 h-6 text-[#00685B]" />
-                <h4 className="text-xl font-bold font-mono text-[var(--text-primary)]">Design System</h4>
-                <p className="text-sm font-normal text-[var(--text-secondary)] leading-relaxed">
-                  Comprehensive UI component token library, accessible color palettes, and motion guidelines.
-                </p>
-              </div>
-
-              <div className="p-8 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-subtle)] space-y-4 premium-card">
-                <Sparkles className="w-6 h-6 text-[#00685B]" />
-                <h4 className="text-xl font-bold font-mono text-[var(--text-primary)]">AI Personalization</h4>
-                <p className="text-sm font-normal text-[var(--text-secondary)] leading-relaxed">
-                  Real-time contextual recommendation engines fine-tuned on first-party behavioral telemetry.
-                </p>
-              </div>
-
-              <div className="p-8 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-subtle)] space-y-4 premium-card">
-                <ShieldCheck className="w-6 h-6 text-[#00685B]" />
-                <h4 className="text-xl font-bold font-mono text-[var(--text-primary)]">Headless Edge Engine</h4>
-                <p className="text-sm font-normal text-[var(--text-secondary)] leading-relaxed">
-                  Sub-80ms global CDN distribution with serverless microservices and automated QA suite.
-                </p>
-              </div>
+                    {/* Metadata */}
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between font-mono text-xs text-neutral-500">
+                        <span className="text-[#00685B] font-bold uppercase">{project.client}</span>
+                        <span>{project.year}</span>
+                      </div>
+                      <h3 className="text-2xl sm:text-3xl font-light text-current group-hover:text-[#00685B] transition-colors">
+                        {project.title}
+                      </h3>
+                      <p className="text-sm font-light text-neutral-500 dark:text-neutral-400 line-clamp-2">
+                        {project.description}
+                      </p>
+                      <div className="pt-2 flex items-center justify-between">
+                        <div className="flex flex-wrap gap-2">
+                          {project.tags.map((tag) => (
+                            <Badge key={tag} label={tag} variant="default" />
+                          ))}
+                        </div>
+                        <Link
+                          href={`/work/${project.slug}`}
+                          className="inline-flex items-center gap-1 text-xs font-mono font-bold text-[#00685B] uppercase tracking-wider"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <span>Case Study</span>
+                          <ArrowUpRight className="w-4 h-4" />
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </TextReveal>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Next Project Pagination Bar */}
-        <section className="py-24 bg-[var(--bg-surface)] text-[var(--text-primary)] border-b border-[var(--border-subtle)]">
-          <div className="max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-16 flex flex-col sm:flex-row items-center justify-between gap-8">
-            <div>
-              <span className="text-xs font-mono text-[#00685B] uppercase font-bold tracking-widest block mb-2">
-                NEXT CASE STUDY
-              </span>
-              <h3 className="text-3xl sm:text-4xl font-normal tracking-tight text-[var(--text-primary)] font-sans">
-                {nextProject.title}
-              </h3>
-              <p className="text-sm text-[var(--text-secondary)] font-mono mt-1">Client: {nextProject.client}</p>
-            </div>
-
-            <MagneticButton
-              href={`/work/${nextProject.slug}`}
-              as="a"
-              variant="primary"
-              className="px-8 py-4 text-xs font-mono font-bold shrink-0"
-            >
-              <span>Explore Next Project</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </MagneticButton>
-          </div>
-        </section>
+        {/* Project Drawer Modal */}
+        <ProjectModal
+          project={selectedProject}
+          onClose={() => setSelectedProject(null)}
+        />
 
         <Footer />
       </main>

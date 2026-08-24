@@ -8,7 +8,6 @@ import { ServicesSection } from "@/components/sections/ServicesSection";
 import { ApproachSection } from "@/components/sections/ApproachSection";
 import { ImpactSection } from "@/components/sections/ImpactSection";
 import { IndustriesSection } from "@/components/sections/IndustriesSection";
-import { AISection } from "@/components/sections/AISection";
 import { InsightsSection } from "@/components/sections/InsightsSection";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { Footer } from "@/components/layout/Footer";
@@ -27,7 +26,6 @@ export default function Version2Page() {
         <ApproachSection />
         <ImpactSection />
         <IndustriesSection />
-        <AISection />
         <InsightsSection />
         <FinalCTA />
         <Footer />

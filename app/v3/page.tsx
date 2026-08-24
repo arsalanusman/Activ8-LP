@@ -8,7 +8,6 @@ import { AgencyIntro } from "@/components/sections/AgencyIntro";
 import { ServicesSection } from "@/components/sections/ServicesSection";
 import { ApproachSection } from "@/components/sections/ApproachSection";
 import { ImpactSection } from "@/components/sections/ImpactSection";
-import { AISection } from "@/components/sections/AISection";
 import { IndustriesSection } from "@/components/sections/IndustriesSection";
 import { InsightsSection } from "@/components/sections/InsightsSection";
 import { FinalCTA } from "@/components/sections/FinalCTA";
@@ -28,7 +27,6 @@ export default function Version3Page() {
         <ServicesSection />
         <ApproachSection />
         <ImpactSection />
-        <AISection />
         <IndustriesSection />
         <InsightsSection />
         <FinalCTA />

@@ -37,7 +37,7 @@ export default function WorkPage() {
             <TextReveal delay={0.2}>
               <h1 className="text-display-hero font-light text-current tracking-tight">
                 Selected Work <br />
-                <span className="italic font-serif font-light text-[#00685B]">(2024–2026)</span>
+                <span className="italic font-serif font-light text-[#00685B]">(2024â€“2026)</span>
               </h1>
             </TextReveal>
 
@@ -94,7 +94,7 @@ export default function WorkPage() {
                         className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                       />
                       <div className="absolute top-4 left-4 bg-[var(--bg-main)]/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 text-xs font-mono font-bold text-[#00685B]">
-                        {project.resultMetric} — {project.resultLabel}
+                        {project.resultMetric} â€” {project.resultLabel}
                       </div>
                     </div>
 
